@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyWithGokul — Number Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #111827;
+    --bg3: #1a2235;
+    --card: #141c2e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #f0f4ff;
+    --muted: #8896b3;
+    --accent: #4f9eff;
+    --accent2: #00e5a0;
+    --accent3: #ff6b6b;
+    --accent4: #ffc547;
+    --accent5: #b06fff;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,14,26,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+  .nav-logo span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-badge {
+    background: linear-gradient(135deg, #4f9eff22, #00e5a022);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(79,158,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,158,255,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,158,255,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -60%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,229,160,0.1);
+    border: 1px solid rgba(0,229,160,0.3);
+    color: var(--accent2);
+    font-size: 0.8rem; font-weight: 600;
+    padding: 6px 16px; border-radius: 999px;
+    margin-bottom: 2rem;
+    font-family: 'DM Mono', monospace;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag::before { content: "●"; font-size: 8px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent2); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); max-width: 560px;
+    line-height: 1.7; font-weight: 300;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent2);
+    color: #0a0e1a;
+    border: none; padding: 14px 32px;
+    border-radius: 999px; font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(0,229,160,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,229,160,0.5); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text); border: 1px solid var(--border2);
+    padding: 14px 32px; border-radius: 999px;
+    font-size: 0.95rem; font-weight: 500; cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-outline:hover { background: var(--bg3); border-color: var(--accent); color: var(--accent); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); }
+  .hero-stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ── SECTION ── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; color: var(--accent); letter-spacing: 2px;
+    margin-bottom: 1rem; text-transform: uppercase;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; letter-spacing: -1px;
+    margin-bottom: 0.75rem;
+    line-height: 1.15;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; max-width: 500px; line-height: 1.6; margin-bottom: 3rem; }
+
+  /* ── TOPIC PILLS ── */
+  .topic-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .pill {
+    padding: 8px 20px; border-radius: 999px; border: 1px solid var(--border2);
+    background: var(--card); color: var(--muted);
+    font-size: 0.85rem; font-weight: 500; cursor: pointer;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #0a0e1a; font-weight: 700; }
+  .pill[data-topic="Arithmetic"].active { background: var(--accent5); border-color: var(--accent5); }
+  .pill[data-topic="Representation"].active { background: var(--accent3); border-color: var(--accent3); }
+  .pill[data-topic="Boolean Algebra"].active { background: var(--accent4); border-color: var(--accent4); color: #1a1000; }
+  .pill[data-topic="K-Map"].active { background: var(--accent2); border-color: var(--accent2); }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-bottom: 2.5rem; }
+  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 0.85rem; color: var(--muted); }
+  .progress-pct { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--accent2); }
+  .progress-track { height: 4px; background: var(--bg3); border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+
+  /* ── STATS ROW ── */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2.5rem; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .stat-card-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700; }
+  .stat-card-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .stat-card:nth-child(2) .stat-card-num { color: var(--accent2); }
+  .stat-card:nth-child(3) .stat-card-num { color: var(--accent4); }
+
+  /* ── Q CARDS ── */
+  .q-grid { display: flex; flex-direction: column; gap: 1rem; }
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .q-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+  .q-card.revealed { border-color: rgba(79,158,255,0.3); }
+  .q-header { padding: 1.25rem 1.5rem; cursor: pointer; display: flex; align-items: flex-start; gap: 1rem; }
+  .q-num-badge {
+    min-width: 36px; height: 36px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem; font-weight: 500;
+    background: var(--bg3); color: var(--muted); flex-shrink: 0;
+  }
+  .q-main { flex: 1; }
+  .q-topic-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    padding: 2px 10px; border-radius: 999px; margin-bottom: 6px;
+    font-family: 'DM Mono', monospace; letter-spacing: 0.5px;
+  }
+  .tag-conv { background: rgba(79,158,255,0.15); color: var(--accent); }
+  .tag-arith { background: rgba(176,111,255,0.15); color: var(--accent5); }
+  .tag-repr { background: rgba(255,107,107,0.15); color: var(--accent3); }
+  .tag-bool { background: rgba(255,197,71,0.15); color: var(--accent4); }
+  .tag-kmap { background: rgba(0,229,160,0.15); color: var(--accent2); }
+  .q-text { font-size: 1rem; font-weight: 500; line-height: 1.5; color: var(--text); }
+  .q-toggle-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--bg3); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 1rem; flex-shrink: 0;
+    transition: all 0.3s; margin-top: 4px;
+  }
+  .q-card.revealed .q-toggle-icon { background: var(--accent); border-color: var(--accent); color: #fff; transform: rotate(45deg); }
+
+  .q-answer {
+    padding: 0 1.5rem;
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+  }
+  .q-answer.open { max-height: 800px; padding: 0 1.5rem 1.5rem; }
+  .answer-inner {
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+  }
+  .answer-text {
+    font-size: 0.95rem; line-height: 1.8; color: #c8d4ee;
+    white-space: pre-line; margin-bottom: 1rem;
+  }
+  .example-block {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-left: 3px solid var(--accent2);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem; line-height: 1.9;
+    color: #a8e6cf;
+    white-space: pre;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+  .example-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 2px;
+    color: var(--accent2); margin-bottom: 6px; font-weight: 500;
+  }
+  .mark-row { display: flex; gap: 8px; margin-top: 1rem; }
+  .mark-btn {
+    flex: 1; padding: 8px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border2); background: transparent;
+    color: var(--muted); font-size: 0.8rem; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    transition: all 0.2s;
+  }
+  .mark-btn:hover { background: var(--bg3); color: var(--text); }
+  .mark-btn.got { background: rgba(0,229,160,0.12); border-color: var(--accent2); color: var(--accent2); }
+  .mark-btn.review { background: rgba(255,197,71,0.12); border-color: var(--accent4); color: var(--accent4); }
+
+  /* ── CHEAT SHEET ── */
+  #cheatsheet { border-top: 1px solid var(--border); }
+  .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+  .cheat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .cheat-card:hover { border-color: var(--accent); }
+  .cheat-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .cheat-card .accent-line { width: 32px; height: 3px; border-radius: 999px; margin-bottom: 1rem; }
+  .cheat-item { font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; line-height: 1.6; }
+  .cheat-item strong { color: var(--text); font-weight: 500; }
+  .cheat-code { font-family: 'DM Mono', monospace; background: var(--bg3); padding: 2px 7px; border-radius: 4px; font-size: 0.8rem; color: #a8e6cf; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center; padding: 3rem 2rem;
+    color: var(--muted); font-size: 0.85rem;
+  }
+  footer strong { color: var(--text); }
+  .footer-logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .footer-logo span { color: var(--accent2); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 2rem; }
+    .hero h1 { letter-spacing: -1px; }
+    section { padding: 4rem 1rem; }
+    .stats-row { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .q-header { padding: 1rem; }
+    .q-answer.open { padding: 0 1rem 1rem; }
+    .example-block { font-size: 0.72rem; }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">study<span>WithGokul</span></div>
+  <ul class="nav-links">
+    <li><a href="#study">Study</a></li>
+    <li><a href="#cheatsheet">Cheat Sheet</a></li>
+  </ul>
+  <span class="nav-badge">Unit 01 — Number Systems</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag">IT Department · Semester Prep</div>
+  <h1>Ace Number<br><em>Systems</em></h1>
+  <p class="hero-sub">Interactive Q&A, worked examples, and a quick-reference cheat sheet — everything you need to score big in your semester exam.</p>
+  <div class="hero-cta">
+    <a href="#study" class="btn-primary">Start Studying →</a>
+    <a href="#cheatsheet" class="btn-outline">Cheat Sheet</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">15</div><div class="hero-stat-label">Questions</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">Topics</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-label">Free</div></div>
+  </div>
+</div>
+
+<!-- STUDY SECTION -->
+<section id="study">
+  <div class="reveal">
+    <div class="section-label">// flashcards</div>
+    <h2 class="section-title">Important Questions<br>& Answers</h2>
+    <p class="section-sub">Reveal each answer, work through the example, then mark your confidence.</p>
+  </div>
+
+  <div class="reveal">
+    <div class="topic-pills" id="pills">
+      <button class="pill active" data-topic="All">All Topics</button>
+      <button class="pill" data-topic="Conversions">Conversions</button>
+      <button class="pill" data-topic="Arithmetic">Arithmetic</button>
+      <button class="pill" data-topic="Representation">Representation</button>
+      <button class="pill" data-topic="Boolean Algebra">Boolean Algebra</button>
+      <button class="pill" data-topic="K-Map">K-Map</button>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span class="progress-label" id="prog-label">0 of 15 revealed</span>
+        <span class="progress-pct" id="prog-pct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-card-num" id="s-total">15</div><div class="stat-card-label">Questions</div></div>
+      <div class="stat-card"><div class="stat-card-num" id="s-got">0</div><div class="stat-card-label">Got it ✓</div></div>
+      <div class="stat-card"><div class="stat-card-num" id="s-rev">0</div><div class="stat-card-label">Need review</div></div>
+    </div>
+  </div>
+
+  <div class="q-grid reveal" id="qgrid"></div>
+</section>
+
+<!-- CHEAT SHEET -->
+<section id="cheatsheet">
+  <div class="reveal">
+    <div class="section-label">// quick reference</div>
+    <h2 class="section-title">Cheat Sheet</h2>
+    <p class="section-sub">Core formulas and rules — study this the night before your exam.</p>
+  </div>
+  <div class="cheat-grid reveal">
+    <div class="cheat-card">
+      <h3>Conversion Rules</h3>
+      <div class="accent-line" style="background:var(--accent)"></div>
+      <div class="cheat-item">Decimal → Binary: <strong>Divide by 2, read remainders ↑</strong></div>
+      <div class="cheat-item">Decimal → Octal: <strong>Divide by 8, read remainders ↑</strong></div>
+      <div class="cheat-item">Decimal → Hex: <strong>Divide by 16, use A–F for 10–15</strong></div>
+      <div class="cheat-item">Binary → Octal: <strong>Group 3 bits from right</strong></div>
+      <div class="cheat-item">Binary → Hex: <strong>Group 4 bits from right</strong></div>
+      <div class="cheat-item">Binary → Decimal: <strong>Σ bit × 2<sup>position</sup></strong></div>
+    </div>
+    <div class="cheat-card">
+      <h3>Binary Arithmetic</h3>
+      <div class="accent-line" style="background:var(--accent5)"></div>
+      <div class="cheat-item">Addition: <span class="cheat-code">1+1 = 10</span> (write 0, carry 1)</div>
+      <div class="cheat-item">Addition: <span class="cheat-code">1+1+1 = 11</span> (write 1, carry 1)</div>
+      <div class="cheat-item">Subtraction: <span class="cheat-code">0-1</span> borrows from next column</div>
+      <div class="cheat-item">1's complement: <strong>flip all bits</strong></div>
+      <div class="cheat-item">2's complement: <strong>1's complement + 1</strong></div>
+      <div class="cheat-item">Used to represent <strong>negative numbers</strong></div>
+    </div>
+    <div class="cheat-card">
+      <h3>BCD & Excess-3</h3>
+      <div class="accent-line" style="background:var(--accent3)"></div>
+      <div class="cheat-item">BCD: each decimal digit → <strong>4-bit binary</strong></div>
+      <div class="cheat-item">BCD is a <strong>weighted</strong> code</div>
+      <div class="cheat-item">Excess-3: digit + 3 → <strong>4-bit binary</strong></div>
+      <div class="cheat-item">Excess-3 is <strong>non-weighted, self-complementing</strong></div>
+      <div class="cheat-item">Example — 5 in XS3: <span class="cheat-code">5+3=8 → 1000</span></div>
+      <div class="cheat-item">Example — 9 in BCD: <span class="cheat-code">1001</span></div>
+    </div>
+    <div class="cheat-card">
+      <h3>Boolean Algebra</h3>
+      <div class="accent-line" style="background:var(--accent4)"></div>
+      <div class="cheat-item">SOP: OR of AND terms (minterms where output = <strong>1</strong>)</div>
+      <div class="cheat-item">POS: AND of OR terms (maxterms where output = <strong>0</strong>)</div>
+      <div class="cheat-item">Minterm: product term, output = 1 for ONE combo</div>
+      <div class="cheat-item">Maxterm: sum term, output = 0 for ONE combo</div>
+      <div class="cheat-item">n variables → <strong>2<sup>n</sup></strong> minterms &amp; maxterms</div>
+    </div>
+    <div class="cheat-card">
+      <h3>K-Map Rules</h3>
+      <div class="accent-line" style="background:var(--accent2)"></div>
+      <div class="cheat-item">Groups must be <strong>powers of 2</strong>: 1, 2, 4, 8…</div>
+      <div class="cheat-item">Make <strong>largest possible</strong> groups</div>
+      <div class="cheat-item">Groups can wrap around edges</div>
+      <div class="cheat-item">SOP → group <strong>1s</strong> | POS → group <strong>0s</strong></div>
+      <div class="cheat-item">Larger group = fewer variables in term</div>
+      <div class="cheat-item">Cells differ by <strong>only 1 bit</strong> (Gray code)</div>
+    </div>
+    <div class="cheat-card">
+      <h3>Quine-McCluskey Steps</h3>
+      <div class="accent-line" style="background:#ff9f4a"></div>
+      <div class="cheat-item">1. Group minterms by <strong>number of 1s</strong></div>
+      <div class="cheat-item">2. Combine pairs differing by <strong>1 bit</strong> → use '-'</div>
+      <div class="cheat-item">3. Repeat until <strong>prime implicants</strong> found</div>
+      <div class="cheat-item">4. Build <strong>prime implicant table</strong></div>
+      <div class="cheat-item">5. Find <strong>essential prime implicants</strong></div>
+      <div class="cheat-item">6. Select <strong>minimum cover</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">study<span>WithGokul</span></div>
+  <p>Made with ♥ for SMVEC — IT Department</p>
+  <p style="margin-top:8px;">Unit 01 · Review of Number Systems · Semester Exam Preparation</p>
+</footer>
+
+<script>
+const DATA = [
+  { topic:"Conversions", tag:"tag-conv", tagLabel:"Conversions",
+    q:"How do you convert a Decimal number to Binary?",
+    a:"Divide the decimal number by 2 repeatedly.\nRecord the remainder at each step (0 or 1).\nStop when the quotient reaches 0.\nRead all remainders from bottom to top — that is your binary number.",
+    ex:"Convert 21 to Binary:\n  21 ÷ 2 = 10  rem 1\n  10 ÷ 2 =  5  rem 0\n   5 ÷ 2 =  2  rem 1\n   2 ÷ 2 =  1  rem 0\n   1 ÷ 2 =  0  rem 1\n\nRead bottom → top:  (21)₁₀  =  (10101)₂"
+  },
+  { topic:"Conversions", tag:"tag-conv", tagLabel:"Conversions",
+    q:"How do you convert Binary to Decimal?",
+    a:"Multiply each binary digit by 2 raised to the power of its position.\nPositions are counted from right starting at 0.\nAdd all the results together.",
+    ex:"Convert  10101  to Decimal:\n  1×2⁴ + 0×2³ + 1×2² + 0×2¹ + 1×2⁰\n=  16  +   0  +   4  +   0  +   1\n=  (21)₁₀"
+  },
+  { topic:"Conversions", tag:"tag-conv", tagLabel:"Conversions",
+    q:"How do you convert Decimal to Octal?",
+    a:"Divide the decimal number by 8 repeatedly.\nRecord each remainder (digits 0–7).\nStop when the quotient is 0.\nRead remainders from bottom to top.",
+    ex:"Convert 65 to Octal:\n  65 ÷ 8 = 8  rem 1\n   8 ÷ 8 = 1  rem 0\n   1 ÷ 8 = 0  rem 1\n\nRead bottom → top:  (65)₁₀  =  (101)₈"
+  },
+  { topic:"Conversions", tag:"tag-conv", tagLabel:"Conversions",
+    q:"How do you convert Binary to Octal?",
+    a:"Group binary digits into sets of 3, starting from the right.\nAdd leading zeros to the leftmost group if needed.\nConvert each 3-bit group to its octal digit (0–7).",
+    ex:"Convert  110101  to Octal:\n  Group:   110   101\n  Convert:  6     5\n\n(110101)₂  =  (65)₈"
+  },
+  { topic:"Conversions", tag:"tag-conv", tagLabel:"Conversions",
+    q:"How do you convert Decimal to Hexadecimal?",
+    a:"Divide the decimal number by 16 repeatedly.\nRecord remainders — use letters A(10) B(11) C(12) D(13) E(14) F(15) for values above 9.\nRead remainders from bottom to top.",
+    ex:"Convert 255 to Hex:\n  255 ÷ 16 = 15  rem 15  →  F\n   15 ÷ 16 =  0  rem 15  →  F\n\n(255)₁₀  =  (FF)₁₆"
+  },
+  { topic:"Conversions", tag:"tag-conv", tagLabel:"Conversions",
+    q:"How do you convert Binary to Hexadecimal?",
+    a:"Group binary digits into sets of 4, starting from the right.\nAdd leading zeros to the leftmost group if needed.\nConvert each 4-bit group to its hex digit (0–9 or A–F).",
+    ex:"Convert  11011110  to Hex:\n  Group:   1101   1110\n  Convert:   D      E\n\n(11011110)₂  =  (DE)₁₆"
+  },
+  { topic:"Arithmetic", tag:"tag-arith", tagLabel:"Binary Arithmetic",
+    q:"What are the four rules of Binary Addition?",
+    a:"0 + 0 = 0\n0 + 1 = 1\n1 + 0 = 1\n1 + 1 = 10  →  write 0, carry 1\n1 + 1 + 1 = 11  →  write 1, carry 1",
+    ex:"Add  1101  and  0110:\n      1 1 0 1\n   +  0 1 1 0\n   ──────────\n    1 0 0 1 1\n\nStep by step (right to left):\n  1+0=1 | 0+1=1 | 1+1=10(write 0 carry 1) | 1+0+1=10"
+  },
+  { topic:"Arithmetic", tag:"tag-arith", tagLabel:"Binary Arithmetic",
+    q:"What are the rules of Binary Subtraction?",
+    a:"0 - 0 = 0\n1 - 0 = 1\n1 - 1 = 0\n0 - 1 = 1  →  borrow 1 from the next higher bit (that bit decreases by 1)",
+    ex:"Subtract  1101  from  1110:\n      1 1 1 0\n   -  1 1 0 1\n   ──────────\n      0 0 0 1\n\nResult  =  (0001)₂  =  (1)₁₀"
+  },
+  { topic:"Representation", tag:"tag-repr", tagLabel:"Representation",
+    q:"What is BCD (Binary Coded Decimal)?",
+    a:"BCD is a binary encoding where each individual decimal digit (0–9) is represented using its 4-bit binary equivalent.\nIt is a weighted code.\nBCD is used in calculators, digital clocks, and financial systems where exact decimal accuracy is needed.",
+    ex:"Decimal  396  in BCD:\n  3  →  0011\n  9  →  1001\n  6  →  0110\n\n(396)₁₀  =  0011 1001 0110  (BCD)"
+  },
+  { topic:"Representation", tag:"tag-repr", tagLabel:"Representation",
+    q:"What is Excess-3 (XS-3) code? How is it different from BCD?",
+    a:"Excess-3 is a non-weighted, self-complementing code.\nEach decimal digit is encoded by adding 3 to it, then writing the 4-bit binary of that result.\nUnlike BCD (weighted), XS-3 is self-complementing, making subtraction easier in digital circuits.",
+    ex:"Decimal  5  in Excess-3:\n  5 + 3 = 8  →  1000\n\nDecimal  396  in XS-3:\n  3+3=6  → 0110\n  9+3=12 → 1100\n  6+3=9  → 1001\n\nResult:  0110 1100 1001"
+  },
+  { topic:"Representation", tag:"tag-repr", tagLabel:"Representation",
+    q:"What is 1's Complement and 2's Complement?",
+    a:"1's Complement: Invert every bit (flip 0→1 and 1→0).\n\n2's Complement: First find 1's complement, then add 1 to the result.\n\n2's complement is the standard way computers represent negative numbers.",
+    ex:"For  1010:\n  1's complement:  0101\n  2's complement:  0101 + 1  =  0110\n\nRepresenting  -6  in 8 bits:\n  +6  =  00000110\n  -6  =  11111010  (2's complement of 00000110)"
+  },
+  { topic:"Boolean Algebra", tag:"tag-bool", tagLabel:"Boolean Algebra",
+    q:"What is SOP (Sum of Products) form?",
+    a:"SOP is a Boolean expression written as an OR of AND terms.\nEach AND term is called a minterm — it covers exactly one row where the output is 1.\nTo form SOP: look at all truth table rows where output = 1, write a product term for each, then OR them all together.",
+    ex:"F(A,B,C) — output=1 at minterms 1,3,5,7:\n\n  m1 = A'B'C  |  m3 = A'BC\n  m5 = AB'C   |  m7 = ABC\n\nSOP:  F = A'B'C + A'BC + AB'C + ABC"
+  },
+  { topic:"Boolean Algebra", tag:"tag-bool", tagLabel:"Boolean Algebra",
+    q:"What is the difference between a Minterm and a Maxterm?",
+    a:"Minterm (mᵢ): A product (AND) term that evaluates to 1 for exactly one input combination.\n→ Variables with value 0 appear complemented; variables with value 1 appear uncomplemented.\n\nMaxterm (Mᵢ): A sum (OR) term that evaluates to 0 for exactly one input combination.\n→ Variables with value 1 appear complemented; variables with value 0 appear uncomplemented.\n\nFor n variables there are 2ⁿ minterms and 2ⁿ maxterms.",
+    ex:"2 variables A, B:\n  m0: A'B'  (A=0,B=0  gives 1)\n  m1: A'B   (A=0,B=1  gives 1)\n  m2: AB'   (A=1,B=0  gives 1)\n  m3: AB    (A=1,B=1  gives 1)\n\n  M0: A+B   (A=0,B=0  gives 0)\n  M2: A+B'  (A=1,B=0  gives 0)"
+  },
+  { topic:"K-Map", tag:"tag-kmap", tagLabel:"K-Map",
+    q:"Solve the 3-variable K-Map: f = Σm(1, 2, 4, 5, 7)",
+    a:"Draw the 3-variable K-Map with A as rows and BC as columns (in Gray code order: 00 01 11 10).\nPlace 1s at positions 1, 2, 4, 5, 7.\nForm the largest possible groups of 1s (groups must be powers of 2).\nRead the simplified term from each group.",
+    ex:"3-var K-Map  (rows=A, cols=BC):\n        BC\n     00  01  11  10\nA=0 [ 0][ 1][ 0][ 1]\nA=1 [ 1][ 1][ 1][ 0]\n\nGroups:\n  • m1,m5      →  B'C\n  • m4,m5      →  AB'\n  • m5,m7      →  AC\n\nResult:  F(A,B,C) = AB' + B'C + AC"
+  },
+  { topic:"K-Map", tag:"tag-kmap", tagLabel:"K-Map",
+    q:"Explain the steps of the Quine-McCluskey (Tabulation) method with an example.",
+    a:"The Quine-McCluskey method is an algorithmic minimization technique — useful for more than 4 variables where K-Maps become impractical.\n\nSteps:\n1. Group minterms by the count of 1s in their binary form (ascending order).\n2. Compare adjacent groups: if two minterms differ by exactly 1 bit, combine them and replace that bit with '-'.\n3. Repeat until no further combinations are possible. Uncombined terms are prime implicants (PIs).\n4. Build a PI table: PIs as rows, original minterms as columns.\n5. Mark cells where a PI covers a minterm.\n6. Essential PIs = minterms covered by only ONE PI → must be included.\n7. Select minimum set of PIs to cover all minterms.",
+    ex:"f(A,B,C,D) = Σm(0,1,2,4,6,8,9,15) + d(11,13)\n\nStep 1 — Group by number of 1s:\n  0 ones:  0000(0)\n  1 one:   0001(1), 0010(2), 0100(4), 1000(8)\n  2 ones:  0110(6), 1001(9)\n  4 ones:  1111(15)\n  don't cares: 1011(11), 1101(13)\n\nStep 2 — Combine pairs (1-bit difference):\n  0,1   →  000-    0,2  →  00-0\n  0,4   →  0-00    0,8  →  -000\n  1,9   →  -001    8,9  →  100-\n\nContinue until all prime implicants found.\nThen build PI table and select minimal cover."
+  }
+];
+
+let revealed={}, markedGot={}, markedReview={};
+let activeTopic = "All";
+
+function render(){
+  const grid = document.getElementById("qgrid");
+  grid.innerHTML = "";
+  let items = DATA.filter(d => activeTopic === "All" || d.topic === activeTopic);
+  document.getElementById("s-total").textContent = items.length;
+  items.forEach((d,i) => {
+    const id = DATA.indexOf(d);
+    const card = document.createElement("div");
+    card.className = "q-card" + (revealed[id]?" revealed":"");
+    card.innerHTML = `
+      <div class="q-header" onclick="toggle(${id})">
+        <div class="q-num-badge">${String(i+1).padStart(2,"0")}</div>
+        <div class="q-main">
+          <span class="q-topic-tag ${d.tag}">${d.tagLabel}</span>
+          <div class="q-text">${d.q}</div>
+        </div>
+        <div class="q-toggle-icon">${revealed[id]?"×":"+"}</div>
+      </div>
+      <div class="q-answer${revealed[id]?" open":""}">
+        <div class="answer-inner">
+          <div class="answer-text">${d.a}</div>
+          ${d.ex ? `<div class="example-label">▶ WORKED EXAMPLE</div><div class="example-block">${d.ex}</div>` : ""}
+          <div class="mark-row">
+            <button class="mark-btn${markedGot[id]?" got":""}" onclick="event.stopPropagation();markGot(${id})">✓ Got it!</button>
+            <button class="mark-btn${markedReview[id]?" review":""}" onclick="event.stopPropagation();markReview(${id})">⚠ Need review</button>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+  updateStats();
+}
+
+function toggle(id){
+  revealed[id] = !revealed[id];
+  render();
+}
+
+function markGot(id){
+  markedGot[id] = !markedGot[id];
+  if(markedGot[id]) markedReview[id] = false;
+  render();
+}
+
+function markReview(id){
+  markedReview[id] = !markedReview[id];
+  if(markedReview[id]) markedGot[id] = false;
+  render();
+}
+
+function updateStats(){
+  const rev = Object.values(revealed).filter(Boolean).length;
+  const total = DATA.length;
+  const pct = Math.round(rev/total*100);
+  document.getElementById("prog-label").textContent = rev+" of "+total+" revealed";
+  document.getElementById("prog-pct").textContent = pct+"%";
+  document.getElementById("prog-fill").style.width = pct+"%";
+  document.getElementById("s-got").textContent = Object.values(markedGot).filter(Boolean).length;
+  document.getElementById("s-rev").textContent = Object.values(markedReview).filter(Boolean).length;
+}
+
+document.getElementById("pills").addEventListener("click", e => {
+  const pill = e.target.closest(".pill");
+  if(!pill) return;
+  activeTopic = pill.dataset.topic;
+  document.querySelectorAll(".pill").forEach(p=>p.classList.remove("active"));
+  pill.classList.add("active");
+  render();
+});
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("visible"); });
+},{threshold:0.1});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+render();
+</script>
+</body>
+</html>
